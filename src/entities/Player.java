@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import static utilz.Constants.PlayerConstants.*;
+import static utilz.HelpMethods.CanMoveHere;
 
 public class Player extends Entity {
 
@@ -20,20 +21,23 @@ public class Player extends Entity {
     private boolean left, up, right, down;
     private boolean moving = false, attacking = false;
     private final float playerSpeed = 2.0f;
+    private int[][] lvlData;
 
-    public Player(float x, float y) {
-        super(x, y);
+    public Player(float x, float y, int width, int height) {
+        super(x, y, width, height);
         loadAnimations();
     }
 
     public void update() {
         updatePos();
+        updateHitbox();
         updateAnimationTick();
         setAnimation();
     }
 
     public void render(Graphics g) {
-        g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, 16 * 4, 16 * 4, null);
+        g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, 48, 48, null);
+        drawHitbox(g);
     }
 
     private void updateAnimationTick() {
@@ -72,31 +76,43 @@ public class Player extends Entity {
 
     private void updatePos() {
         moving = false;
+        if (!left && !right && !up && !down)
+            return;
+
+        float xSpeed = 0, ySpeed = 0;
+
         if (left && !right) {
-            x -= playerSpeed;
-            moving = true;
+            xSpeed = -playerSpeed;
         } else if (right && !left) {
-            x += playerSpeed;
-            moving = true;
+            xSpeed = playerSpeed;
         }
 
         if (up && !down) {
-            y -= playerSpeed;
-            moving = true;
+            ySpeed = -playerSpeed;
         } else if (down && !up) {
-            y += playerSpeed;
+            ySpeed = playerSpeed;
+        }
+
+        if (CanMoveHere(x+xSpeed, y+ySpeed,width,height,lvlData)){
+            this.x += xSpeed;
+            this.y +=ySpeed;
             moving = true;
         }
     }
 
     private void loadAnimations() {
         BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
+
         animations = new BufferedImage[5][4];
         for (int j = 0; j < animations.length; j++) {
             for (int i = 0; i < animations[j].length; i++) {
                 animations[j][i] = img.getSubimage(20 * i + 80, 30 * j + 20, 16, 16);
             }
         }
+    }
+
+    public void loadLvlData(int[][] lvlData) {
+        this.lvlData = lvlData;
     }
 
     public void resetDirBooleans() {
@@ -106,7 +122,7 @@ public class Player extends Entity {
         down = false;
     }
 
-    public void setAttacking(boolean attacking){
+    public void setAttacking(boolean attacking) {
         this.attacking = attacking;
 
     }
