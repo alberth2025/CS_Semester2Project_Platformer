@@ -21,7 +21,7 @@ public class KeyboardInputs implements KeyListener {
         switch (e.getKeyCode()){
             case KeyEvent.VK_W:
             case KeyEvent.VK_UP:
-                gamePanel.getGame().getPlayer().setUp(false);
+                gamePanel.getGame().getPlayer().setJump(false);
                 break;
             case KeyEvent.VK_A:
             case KeyEvent.VK_LEFT:
@@ -42,7 +42,7 @@ public class KeyboardInputs implements KeyListener {
         switch (e.getKeyCode()){
             case KeyEvent.VK_W:
             case KeyEvent.VK_UP:
-                gamePanel.getGame().getPlayer().setUp(true);
+                gamePanel.getGame().getPlayer().setJump(true);
                 break;
             case KeyEvent.VK_A:
             case KeyEvent.VK_LEFT:
