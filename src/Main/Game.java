@@ -1,24 +1,30 @@
 package Main;
-import entities.Player;
-import levels.LevelManager;
+
+import gamestates.*;
+import gamestates.Menu;
 
 import java.awt.*;
-public class Game implements Runnable{
+
+import static java.awt.SystemColor.menu;
+
+public class Game implements Runnable {
     private final GameWindow gameWindow;
     private final GamePanel gamePanel;
     private Thread gameThread;
     private final int FPS_SET = 60;
     private final int UPS_SET = 200;
-    private Player player;
-    private LevelManager levelManager;
+
+    private Playing playing;
+    private Menu menu;
     public final static int TILES_DEFAULT_SIZE = 24;
     public final static float SCALE = 2f;
     public final static int TILES_IN_WIDTH = 26;
     public final static int TILES_IN_HEIGHT = 14;
-    public final static int TILES_SIZE = (int)(TILES_DEFAULT_SIZE * SCALE);
-    public final static int GAME_WIDTH  = TILES_SIZE * TILES_IN_WIDTH;
+    public final static int TILES_SIZE = (int) (TILES_DEFAULT_SIZE * SCALE);
+    public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
     public final static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
-    public Game(){
+
+    public Game() {
         initClasses();
         gamePanel = new GamePanel(this);
         gameWindow = new GameWindow(gamePanel);
@@ -27,25 +33,42 @@ public class Game implements Runnable{
     }
 
     private void initClasses() {
-        levelManager = new LevelManager(this);
-        player = new Player(200,200, 48, 48);
-        player.loadLvlData(levelManager.getCurrentLevel().getLvlData());
-
+        menu = new Menu(this);
+        playing = new Playing(this);
     }
 
-    private void startGameLoop(){
+    private void startGameLoop() {
         gameThread = new Thread(this);
         gameThread.start();
     }
 
-    public void update(){
-        player.update();
-        levelManager.update();
+    public void update() {
+        switch (Gamestate.state) {
+            case MENU:
+                menu.update();
+                break;
+            case PLAYING:
+                playing.update();
+                break;
+            case OPTIONS:
+            case QUIT:
+            default:
+                System.exit(0);
+                break;
+        }
     }
 
-    public void render(Graphics g){
-        levelManager.draw(g);
-        player.render(g);
+    public void render(Graphics g) {
+        switch (Gamestate.state) {
+            case MENU:
+                menu.draw(g);
+                break;
+            case PLAYING:
+                playing.draw(g);
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -62,39 +85,45 @@ public class Game implements Runnable{
         double deltaU = 0;
         double deltaF = 0;
 
-        while (true){
+        while (true) {
             long currentTime = System.nanoTime();
 
-            deltaU += (currentTime-previousTime)/timePerUpdate;
-            deltaF += (currentTime-previousTime)/timePerFrame;
+            deltaU += (currentTime - previousTime) / timePerUpdate;
+            deltaF += (currentTime - previousTime) / timePerFrame;
             previousTime = currentTime;
 
-            if (deltaU>=1){
+            if (deltaU >= 1) {
                 update();
                 updates++;
                 deltaU--;
             }
 
-            if (deltaF>=1) {
+            if (deltaF >= 1) {
                 gamePanel.repaint();
                 frames++;
                 deltaF--;
             }
 
-            if (System.currentTimeMillis()-lastCheck>=1000){
+            if (System.currentTimeMillis() - lastCheck >= 1000) {
                 lastCheck = System.currentTimeMillis();
-                System.out.println("FPS: "+frames + " | UPS: " + updates);
-                frames=0;
-                updates=0;
+                System.out.println("FPS: " + frames + " | UPS: " + updates);
+                frames = 0;
+                updates = 0;
             }
         }
     }
 
-    public Player getPlayer(){
-        return player;
+    public void windowFocusLost() {
+        if (Gamestate.state==Gamestate.PLAYING){
+            playing.getPlayer().resetDirBooleans();
+        }
     }
 
-    public void windowFocusLost() {
-        player.resetDirBooleans();
+    public Menu getMenu(){
+        return menu;
+    }
+
+    public Playing getPlaying(){
+        return playing;
     }
 }
