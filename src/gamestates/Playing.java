@@ -9,6 +9,7 @@ import utilz.LoadSave;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 
 import static Main.Game.*;
 
@@ -24,9 +25,13 @@ public class Playing extends State implements Statemethods {
     private int maxTilesOffset = lvlTilesWide - TILES_IN_WIDTH;
     private int maxLvlOffsetX = maxTilesOffset * TILES_SIZE;
 
+    private BufferedImage backgroundImg;
+
     public Playing(Game game) {
         super(game);
         initClasses();
+
+        backgroundImg = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG);
     }
 
     private void initClasses() {
@@ -70,11 +75,16 @@ public class Playing extends State implements Statemethods {
 
     @Override
     public void draw(Graphics g) {
+        g.drawImage(backgroundImg,0,0, GAME_WIDTH,GAME_HEIGHT,null);
+
         levelManager.draw(g, xLvlOffset);
         player.render(g, xLvlOffset);
 
-        if (paused)
+        if (paused) {
+            g.setColor(new Color(0,0,0,150));
+            g.fillRect(0,0, GAME_WIDTH, GAME_HEIGHT);
             pauseOverlay.draw(g);
+        }
     }
 
     public void mouseDragged(MouseEvent e) {

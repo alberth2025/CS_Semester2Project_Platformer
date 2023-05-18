@@ -86,15 +86,19 @@ public class Player extends Entity {
 
     private void updatePos() {
         moving = false;
+
         if (!inAir){
             if (!IsEntityOnFloor(hitBox,lvlData)){
                 inAir = true;
             }
         }
+
         if (jump)
             jump();
-        if (!left && !right && !inAir)
-            return;
+
+        if (!inAir)
+            if ((!left&&!right)||(right&&left))
+                return;
 
         float xSpeed = 0;
 
@@ -104,7 +108,6 @@ public class Player extends Entity {
         if (right) {
             xSpeed += playerSpeed;
         }
-
 
         if (inAir){
             if (CanMoveHere(hitBox.x, hitBox.y+airSpeed, hitBox.width, hitBox.height, lvlData)){
