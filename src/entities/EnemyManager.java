@@ -44,8 +44,8 @@ public class EnemyManager {
         for (Boy b: boys) {
             if (b.isActive()) {
                 g.drawImage(boyArr[b.getEnemyState()][b.getAniIndex()], (int) b.getHitBox().x - xLvlOffset - BOY_DRAWOFFSET_X + b.flipX(), (int) b.getHitBox().y - BOY_DRAWOFFSET_Y, BOY_WIDTH * b.flipW(), BOY_HEIGHT, null);
-                b.drawHitbox(g, xLvlOffset);
-                b.drawAttackBox(g, xLvlOffset);
+                //b.drawHitbox(g, xLvlOffset);
+                //b.drawAttackBox(g, xLvlOffset);
             }
         }
     }
