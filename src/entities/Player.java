@@ -1,6 +1,7 @@
 package entities;
 
 import Main.Game;
+import audio.AudioPlayer;
 import gamestates.Playing;
 import utilz.LoadSave;
 
@@ -70,6 +71,16 @@ public class Player extends Entity {
         updateHealthBar();
 
         if (currentHealth <= 0) {
+            if (state!= DEATH) {
+                state = DEATH;
+                aniTick = 0;
+                aniIndex = 0;
+                playing.setPlayerDying(true);
+                playing.getGame().getAudioPlayer().playEffect(AudioPlayer.DIE);
+            } else if (aniIndex == GetSpriteAmounts(DEATH) - 1 && aniTick >= ANI_SPEED -1) {
+                playing.setGameOver(true);
+            }else
+                updateAnimationTick();
             playing.setGameOver(true);
             return;
         }

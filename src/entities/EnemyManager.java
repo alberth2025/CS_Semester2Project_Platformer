@@ -1,7 +1,9 @@
 package entities;
 
+import audio.AudioPlayer;
 import gamestates.Playing;
 import levels.Level;
+import ui.AudioOptions;
 import utilz.LoadSave;
 
 import java.awt.*;
@@ -54,6 +56,7 @@ public class EnemyManager {
         for (Boy b: boys)
             if (attackBox.intersects(b.getHitBox())){
                 b.hurt(10);
+                playing.getGame().getAudioPlayer().playAttackSound();
                 return;
             }
     }

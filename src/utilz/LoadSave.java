@@ -28,6 +28,7 @@ public class LoadSave {
     public static final String BOY_SPRITE = "boy_sprite.png";
     public static final String STATUS_BAR = "health_bar.png";
     public static final String COMPLETED_IMG = "completed_sprite.png";
+    public static final String OPTIONS_MENU = "options_background.png";
 
 
     public static BufferedImage GetSpriteAtlas(String fileName) {

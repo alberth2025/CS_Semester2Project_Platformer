@@ -1,17 +1,16 @@
 package entities;
 
 import Main.Game;
+import gamestates.Playing;
 
-import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
 import static utilz.Constants.Directions.*;
 import static utilz.Constants.EnemyConstants.*;
-import static utilz.HelpMethods.*;
 
 public class Boy extends Enemy{
 
-    //Attackbox
+    private Playing playing;
 
     public Boy(float x, float y) {
         super(x, y, BOY_WIDTH, BOY_HEIGHT, BOY);

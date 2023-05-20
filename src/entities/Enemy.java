@@ -1,5 +1,6 @@
 package entities;
 import Main.Game;
+import gamestates.Playing;
 
 import java.awt.geom.Rectangle2D;
 
@@ -15,6 +16,7 @@ public abstract class Enemy extends Entity {
     protected float attackDistance = Game.TILES_SIZE;
     protected boolean active = true;
     protected boolean attackChecked;
+    private Playing playing;
     public Enemy(float x, float y, int width, int height, int enemyType){
         super(x, y, width, height);
         this.enemyType = enemyType;
@@ -97,8 +99,9 @@ public abstract class Enemy extends Entity {
             newState(HURT);
     }
     protected void checkPlayerHit(Rectangle2D.Float attackBox, Player player) {
-        if (attackBox.intersects(player.hitBox))
+        if (attackBox.intersects(player.hitBox)) {
             player.changeHealth(-GetEnemyDmg(enemyType));
+        }
         attackChecked = true;
     }
     protected void updateAnimationTick(){

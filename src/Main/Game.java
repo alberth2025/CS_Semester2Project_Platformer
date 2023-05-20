@@ -1,7 +1,9 @@
 package Main;
 
+import audio.AudioPlayer;
 import gamestates.*;
 import gamestates.Menu;
+import ui.AudioOptions;
 import utilz.LoadSave;
 
 import java.awt.*;
@@ -17,10 +19,13 @@ public class Game implements Runnable {
 
     private Playing playing;
     private Menu menu;
+    private AudioOptions audioOptions;
+    private AudioPlayer audioPlayer;
     public final static int TILES_DEFAULT_SIZE = 24;
     public final static float SCALE = 2f;
     public final static int TILES_IN_WIDTH = 26;
     public final static int TILES_IN_HEIGHT = 14;
+    private GameOptions gameOptions;
     public final static int TILES_SIZE = (int) (TILES_DEFAULT_SIZE * SCALE);
     public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
     public final static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
@@ -35,8 +40,11 @@ public class Game implements Runnable {
     }
 
     private void initClasses() {
+        audioOptions = new AudioOptions(this);
+        audioPlayer = new AudioPlayer();
         menu = new Menu(this);
         playing = new Playing(this);
+        gameOptions = new GameOptions(this);
     }
 
     private void startGameLoop() {
@@ -53,6 +61,8 @@ public class Game implements Runnable {
                 playing.update();
                 break;
             case OPTIONS:
+                gameOptions.update();
+                break;
             case QUIT:
             default:
                 System.exit(0);
@@ -67,6 +77,9 @@ public class Game implements Runnable {
                 break;
             case PLAYING:
                 playing.draw(g);
+                break;
+            case OPTIONS:
+                gameOptions.draw(g);
                 break;
             default:
                 break;
@@ -127,5 +140,17 @@ public class Game implements Runnable {
 
     public Playing getPlaying(){
         return playing;
+    }
+
+    public AudioOptions getAudioOptions(){
+        return audioOptions;
+    }
+
+    public GameOptions getGameOptions(){
+        return gameOptions;
+    }
+
+    public AudioPlayer getAudioPlayer() {
+        return audioPlayer;
     }
 }

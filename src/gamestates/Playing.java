@@ -14,7 +14,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-
 import static Main.Game.*;
 
 public class Playing extends State implements Statemethods {
@@ -32,7 +31,10 @@ public class Playing extends State implements Statemethods {
 
     private BufferedImage backgroundImg;
     private boolean gameOver;
+
+    private boolean cutsceneCompleted;
     private boolean lvlCompleted;
+    private boolean playerDying;
 
     public Playing(Game game) {
         super(game);
@@ -74,9 +76,11 @@ public class Playing extends State implements Statemethods {
     public void update() {
         if (paused){
             pauseOverlay.update();
-        }else if(lvlCompleted){
+        }else if (lvlCompleted) {
             levelCompletedOverlay.update();
-        }else if(!gameOver){
+        } else if (playerDying) {
+            player.update();
+        } else if(!gameOver){
             levelManager.update();
             player.update();
             enemyManager.update(levelManager.getCurrentLevel().getLvlData(), player);
@@ -123,6 +127,8 @@ public class Playing extends State implements Statemethods {
         gameOver = false;
         paused = false;
         lvlCompleted = false;
+        playerDying = false;
+        cutsceneCompleted = false;
         player.resetAll();
         enemyManager.resetAllEnemies();
     }
@@ -243,5 +249,9 @@ public class Playing extends State implements Statemethods {
 
     public void setLevelCompleted(boolean levelCompleted) {
         this.lvlCompleted = levelCompleted;
+    }
+
+    public void setPlayerDying(boolean playerDying){
+        this.playerDying = playerDying;
     }
 }
