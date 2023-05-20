@@ -18,7 +18,6 @@ public class Constants {
         public static final int BOY_HEIGHT = (int)(BOY_HEIGHT_DEFAULT * (Game.SCALE+1));
         public static final int BOY_DRAWOFFSET_X = (int) (1*Game.SCALE);
         public static final int BOY_DRAWOFFSET_Y = (int) (1*Game.SCALE);
-
         public static int GetSpriteAmount(int enemy_type, int enemy_state){
             switch (enemy_type){
                 case BOY:
@@ -39,7 +38,22 @@ public class Constants {
             return 0;
         }
 
-
+        public static int GetMaxHealth(int enemy_type){
+            switch (enemy_type){
+                case BOY:
+                    return 10;
+                default:
+                    return 1;
+            }
+        }
+        public static int GetEnemyDmg(int enemy_type){
+            switch (enemy_type){
+                case BOY:
+                    return 15;
+                default:
+                    return 1;
+            }
+        }
 
     }
 
