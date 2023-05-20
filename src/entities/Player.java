@@ -24,8 +24,8 @@ public class Player extends Entity {
     private boolean moving = false, attacking = false;
     private final float playerSpeed = 2f;
     private int[][] lvlData;
-    private float xDrawOffset = 0*Game.SCALE;
-    private float yDrawOffset = 0*Game.SCALE;
+    private float xDrawOffset = 1*Game.SCALE;
+    private float yDrawOffset = 1*Game.SCALE;
 
     //jumping and gravity
     private float airSpeed = 0f;
@@ -48,6 +48,7 @@ public class Player extends Entity {
 
     public void render(Graphics g, int lvlOffset) {
         g.drawImage(animations[playerAction][aniIndex], (int) (hitBox.x - xDrawOffset) - lvlOffset, (int) (hitBox.y-yDrawOffset), 48, 48, null);
+        drawHitbox(g, lvlOffset);
     }
 
     private void updateAnimationTick() {

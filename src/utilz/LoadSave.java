@@ -1,13 +1,15 @@
 package utilz;
 
 import Main.Game;
+import entities.Boy;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-
+import java.util.ArrayList;
+import static utilz.Constants.EnemyConstants.BOY;
 public class LoadSave {
 
     public static final String PLAYER_ATLAS = "CharacterSprites.png";
@@ -22,6 +24,7 @@ public class LoadSave {
     public static final String VOLUME_BUTTONS = "volume_buttons.png";
     public static final String MENU_BACKGROUND_IMG = "background_menu.jpeg";
     public static final String PLAYING_BG_IMG = "playing_bg_img.png";
+    public static final String BOY_SPRITE = "boy_sprite.png";
 
 
     public static BufferedImage GetSpriteAtlas(String fileName) {
@@ -42,6 +45,19 @@ public class LoadSave {
         return img;
     }
 
+    public static ArrayList<Boy> GetBoys(){
+        BufferedImage img = GetSpriteAtlas(LEVEL_ONE_DATA);
+        ArrayList<Boy> list = new ArrayList<>();
+        for (int j = 0; j < img.getHeight(); j++){
+            for (int i = 0; i < img.getWidth(); i++) {
+                Color color = new Color(img.getRGB(i, j));
+                int value = color.getGreen();
+                if (value == BOY)
+                    list.add(new Boy(i*Game.TILES_SIZE, j*Game.TILES_SIZE));
+            }
+        }
+        return list;
+    }
     public static int[][] GetLevelData(){
         BufferedImage img = GetSpriteAtlas(LEVEL_ONE_DATA);
         int[][] lvlData = new int[img.getHeight()][img.getWidth()];
