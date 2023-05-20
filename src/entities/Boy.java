@@ -13,10 +13,9 @@ public class Boy extends Enemy{
 
     //Attackbox
 
-    private Rectangle2D.Float attackBox;
     public Boy(float x, float y) {
         super(x, y, BOY_WIDTH, BOY_HEIGHT, BOY);
-        initHitbox(x, y, (int)(12* (Game.SCALE+1)), (int) (15*(Game.SCALE+1)));
+        initHitbox(12,15);
         initAttackBox();
     }
 
@@ -43,7 +42,7 @@ public class Boy extends Enemy{
         if (inAir){
             updateInAir(lvlData);
         }else {
-            switch (enemyState){
+            switch (state){
                 case IDLE:
                     newState(MOVING);
                     break;
@@ -67,10 +66,7 @@ public class Boy extends Enemy{
         }
     }
 
-    public void drawAttackBox(Graphics g, int xLvlOffset){
-        g.setColor(Color.RED);
-        g.drawRect((int)(attackBox.x - xLvlOffset), (int)attackBox.y, (int)attackBox.width, (int)attackBox.height);
-    }
+
     public int flipX(){
         if (walkDir == LEFT)
             return (int)(width - 8);

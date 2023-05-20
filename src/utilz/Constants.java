@@ -5,6 +5,9 @@ import gamestates.Gamestate;
 
 public class Constants {
 
+    public static final float GRAVITY = 0.05f*Game.SCALE;
+    public static final int ANI_SPEED = 30;
+
     public static class EnemyConstants{
         public static final int BOY = 1;
         public static final int IDLE = 0;

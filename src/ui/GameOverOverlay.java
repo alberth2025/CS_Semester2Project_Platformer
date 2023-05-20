@@ -20,8 +20,11 @@ public class GameOverOverlay {
         g.fillRect(0,0, GAME_WIDTH, GAME_HEIGHT);
 
         g.setColor(Color.white);
-        g.drawString("Game Over", GAME_WIDTH/2, 150);
-        g.drawString("Press esc to enter Main Menu!", GAME_WIDTH / 2, 300);
+        g.drawString("Game Over.", GAME_WIDTH/2-50, 150);
+        g.drawString("You were defeated by the Orks.", GAME_WIDTH/2-105, 250);
+        g.drawString("The beasts take your armor and sword as trophies.", GAME_WIDTH/2-170, 280);
+        g.drawString("You spend your last moments in shame, knowing you failed your Chapter.", GAME_WIDTH/2-240, 310);
+        g.drawString("Press esc to enter Main Menu!", GAME_WIDTH / 2-100, 400);
 
     }
 
