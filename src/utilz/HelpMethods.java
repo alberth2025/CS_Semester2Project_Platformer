@@ -1,9 +1,14 @@
 package utilz;
 
 import Main.Game;
+import entities.Boy;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
+import static utilz.Constants.EnemyConstants.BOY;
 
 public class HelpMethods {
     public static boolean CanMoveHere(float x, float y, float width, float height, int[][] lvlData) {
@@ -95,5 +100,30 @@ public class HelpMethods {
             return AreAllTilesWalkable(firstXTile, secondXTile, yTile, lvlData);
         else
             return AreAllTilesWalkable(secondXTile, firstXTile, yTile, lvlData);
+    }
+    public static int[][] GetLevelData(BufferedImage img){
+        int[][] lvlData = new int[img.getHeight()][img.getWidth()];
+        for (int j = 0; j < img.getHeight(); j++){
+            for (int i = 0; i < img.getWidth(); i++) {
+                Color color = new Color(img.getRGB(i, j));
+                int value = color.getRed();
+                if (value >= 7)
+                    value = 0;
+                lvlData[j][i] = value;
+            }
+        }
+        return lvlData;
+    }
+    public static ArrayList<Boy> GetBoys(BufferedImage img){
+        ArrayList<Boy> list = new ArrayList<>();
+        for (int j = 0; j < img.getHeight(); j++){
+            for (int i = 0; i < img.getWidth(); i++) {
+                Color color = new Color(img.getRGB(i, j));
+                int value = color.getGreen();
+                if (value == BOY)
+                    list.add(new Boy(i*Game.TILES_SIZE, j*Game.TILES_SIZE));
+            }
+        }
+        return list;
     }
 }

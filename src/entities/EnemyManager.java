@@ -1,6 +1,7 @@
 package entities;
 
 import gamestates.Playing;
+import levels.Level;
 import utilz.LoadSave;
 
 import java.awt.*;
@@ -17,18 +18,22 @@ public class EnemyManager {
     public EnemyManager(Playing playing) {
         this.playing = playing;
         loadEnemyImgs();
-        addEnemies();
     }
 
-    private void addEnemies() {
-        boys = LoadSave.GetBoys();
+    public void loadEnemies(Level level) {
+        boys = level.getBoys();
         System.out.println("Number of boys: " + boys.size());
     }
 
     public void update(int[][] lvlData, Player player){
+        boolean isAnyActive = false;
         for (Boy b: boys)
-            if (b.isActive())
+            if (b.isActive()) {
                 b.update(lvlData, player);
+                isAnyActive = true;
+            }
+        if (!isAnyActive)
+            playing.setLevelCompleted(true);
     }
 
     public void draw(Graphics g, int xLvlOffset){
@@ -64,4 +69,5 @@ public class EnemyManager {
         for (Boy b: boys)
             b.resetEnemy();
     }
+
 }

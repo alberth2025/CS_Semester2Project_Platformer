@@ -1,10 +1,43 @@
 package levels;
 
-public class Level {
-    private int[][] lvlData;
+import entities.Boy;
 
-    public Level(int[][] lvlData){
-        this.lvlData = lvlData;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
+import static Main.Game.TILES_IN_WIDTH;
+import static Main.Game.TILES_SIZE;
+import static utilz.HelpMethods.GetLevelData;
+import static utilz.HelpMethods.GetBoys;
+public class Level {
+    private BufferedImage img;
+    private int[][] lvlData;
+    private ArrayList<Boy> boys;
+    private int lvlTilesWide;
+    private int maxTilesOffset;
+    private int maxLvlOffsetX;
+
+
+    public Level(BufferedImage img){
+        this.img = img;
+        createLevelData();
+        createEnemies();
+        calcLvlOffsets();
+    }
+
+    private void calcLvlOffsets() {
+        lvlTilesWide = img.getWidth();
+        maxTilesOffset = lvlTilesWide - TILES_IN_WIDTH;
+        maxLvlOffsetX = TILES_SIZE*maxTilesOffset;
+
+    }
+
+    private void createEnemies() {
+        boys = GetBoys(img);
+    }
+
+    private void createLevelData() {
+        lvlData = GetLevelData(img);
     }
 
     public int getSpriteIndex(int x, int y){
@@ -13,5 +46,12 @@ public class Level {
 
     public int[][] getLvlData(){
         return lvlData;
+    }
+    public int getLvlOffset(){
+        return maxLvlOffsetX;
+    }
+
+    public ArrayList<Boy> getBoys(){
+        return boys;
     }
 }
