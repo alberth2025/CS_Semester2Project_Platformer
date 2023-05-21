@@ -15,8 +15,7 @@ public class HelpMethods {
         if (!IsSolid(x, y, lvlData))
             if (!IsSolid(x + width, y + height, lvlData))
                 if (!IsSolid(x + width, y, lvlData))
-                    if (!IsSolid(x, y + height, lvlData))
-                        return true;
+                    return !IsSolid(x, y + height, lvlData);
         return false;
     }
 
@@ -30,15 +29,13 @@ public class HelpMethods {
         float xIndex = x / Game.TILES_SIZE;
         float yIndex = y / Game.TILES_SIZE;
 
-        return IsTileSolid((int)xIndex, (int)yIndex, lvlData);
+        return IsTileSolid((int) xIndex, (int) yIndex, lvlData);
     }
 
     public static boolean IsTileSolid(int xTile, int yTile, int[][] lvlData) {
         int value = lvlData[yTile][xTile];
 
-        if (value != 1)
-            return true;
-        return false;
+        return value != 1;
     }
 
     public static float GetEntityXPosNextToWall(Rectangle2D.Float hitBox, float xSpeed) {
@@ -70,29 +67,28 @@ public class HelpMethods {
     public static boolean IsEntityOnFloor(Rectangle2D.Float hitBox, int[][] lvlData) {
         //Check the pixel below bottom left and bottom right corners
         if (!IsSolid(hitBox.x, hitBox.y + hitBox.height + 1, lvlData))
-            if (!IsSolid(hitBox.x + hitBox.width, hitBox.y + hitBox.height+1, lvlData))
-                return false;
+            return IsSolid(hitBox.x + hitBox.width, hitBox.y + hitBox.height + 1, lvlData);
         return true;
     }
 
-    public static boolean IsFloor(Rectangle2D.Float hitBox, float xSpeed, int[][] lvlData){
-        if (xSpeed>0)
+    public static boolean IsFloor(Rectangle2D.Float hitBox, float xSpeed, int[][] lvlData) {
+        if (xSpeed > 0)
             return IsSolid(hitBox.x + hitBox.width + xSpeed, hitBox.y + hitBox.height + 1, lvlData);
         else
             return IsSolid(hitBox.x + xSpeed, hitBox.y + hitBox.height + 1, lvlData);
     }
 
-    public static boolean AreAllTilesWalkable(int startX, int endX, int y, int[][] lvlData){
+    public static boolean AreAllTilesWalkable(int startX, int endX, int y, int[][] lvlData) {
         for (int i = 0; i < endX - startX; i++) {
             if (IsTileSolid(startX + i, y, lvlData))
                 return false;
-            if (!IsTileSolid(startX + i, y+1, lvlData))
+            if (!IsTileSolid(startX + i, y + 1, lvlData))
                 return false;
         }
         return true;
     }
 
-    public static boolean IsSightClear(int[][] lvlData, Rectangle2D.Float firstHitBox, Rectangle2D.Float secondHitBox, int yTile){
+    public static boolean IsSightClear(int[][] lvlData, Rectangle2D.Float firstHitBox, Rectangle2D.Float secondHitBox, int yTile) {
         int firstXTile = (int) (firstHitBox.x / Game.TILES_SIZE);
         int secondXTile = (int) (secondHitBox.x / Game.TILES_SIZE);
 
@@ -101,9 +97,10 @@ public class HelpMethods {
         else
             return AreAllTilesWalkable(secondXTile, firstXTile, yTile, lvlData);
     }
-    public static int[][] GetLevelData(BufferedImage img){
+
+    public static int[][] GetLevelData(BufferedImage img) {
         int[][] lvlData = new int[img.getHeight()][img.getWidth()];
-        for (int j = 0; j < img.getHeight(); j++){
+        for (int j = 0; j < img.getHeight(); j++) {
             for (int i = 0; i < img.getWidth(); i++) {
                 Color color = new Color(img.getRGB(i, j));
                 int value = color.getRed();
@@ -114,14 +111,15 @@ public class HelpMethods {
         }
         return lvlData;
     }
-    public static ArrayList<Boy> GetBoys(BufferedImage img){
+
+    public static ArrayList<Boy> GetBoys(BufferedImage img) {
         ArrayList<Boy> list = new ArrayList<>();
-        for (int j = 0; j < img.getHeight(); j++){
+        for (int j = 0; j < img.getHeight(); j++) {
             for (int i = 0; i < img.getWidth(); i++) {
                 Color color = new Color(img.getRGB(i, j));
                 int value = color.getGreen();
                 if (value == BOY)
-                    list.add(new Boy(i*Game.TILES_SIZE, j*Game.TILES_SIZE));
+                    list.add(new Boy(i * Game.TILES_SIZE, j * Game.TILES_SIZE));
             }
         }
         return list;

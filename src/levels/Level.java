@@ -7,10 +7,11 @@ import java.util.ArrayList;
 
 import static Main.Game.TILES_IN_WIDTH;
 import static Main.Game.TILES_SIZE;
-import static utilz.HelpMethods.GetLevelData;
 import static utilz.HelpMethods.GetBoys;
+import static utilz.HelpMethods.GetLevelData;
+
 public class Level {
-    private BufferedImage img;
+    private final BufferedImage img;
     private int[][] lvlData;
     private ArrayList<Boy> boys;
     private int lvlTilesWide;
@@ -18,7 +19,7 @@ public class Level {
     private int maxLvlOffsetX;
 
 
-    public Level(BufferedImage img){
+    public Level(BufferedImage img) {
         this.img = img;
         createLevelData();
         createEnemies();
@@ -28,7 +29,7 @@ public class Level {
     private void calcLvlOffsets() {
         lvlTilesWide = img.getWidth();
         maxTilesOffset = lvlTilesWide - TILES_IN_WIDTH;
-        maxLvlOffsetX = TILES_SIZE*maxTilesOffset;
+        maxLvlOffsetX = TILES_SIZE * maxTilesOffset;
 
     }
 
@@ -40,18 +41,19 @@ public class Level {
         lvlData = GetLevelData(img);
     }
 
-    public int getSpriteIndex(int x, int y){
+    public int getSpriteIndex(int x, int y) {
         return lvlData[y][x];
     }
 
-    public int[][] getLvlData(){
+    public int[][] getLvlData() {
         return lvlData;
     }
-    public int getLvlOffset(){
+
+    public int getLvlOffset() {
         return maxLvlOffsetX;
     }
 
-    public ArrayList<Boy> getBoys(){
+    public ArrayList<Boy> getBoys() {
         return boys;
     }
 }

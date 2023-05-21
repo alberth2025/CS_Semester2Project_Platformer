@@ -6,21 +6,18 @@ import gamestates.Playing;
 import utilz.LoadSave;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
-import static utilz.Constants.UI.PauseButtons.*;
-import static utilz.Constants.UI.URMButtons.*;
-import static utilz.Constants.UI.VolumeButtons.*;
+import static utilz.Constants.UI.URMButtons.URM_SIZE;
 
 public class PauseOverlay {
     private BufferedImage backgroundImg;
     private int backgroundX, backgroundY, backgroundW, backgroundH;
 
     private UrmButton menuB, replayB, unpauseB;
-    private Playing playing;
-    private AudioOptions audioOptions;
+    private final Playing playing;
+    private final AudioOptions audioOptions;
 
     public PauseOverlay(Playing playing) {
         this.playing = playing;
@@ -30,12 +27,11 @@ public class PauseOverlay {
     }
 
 
-
     private void createUrmButtons() {
-        int menuX = (int)(516*Game.SCALE)/2;
-        int replayX = (int)(596*Game.SCALE)/2;
-        int unPauseX = (int)(676*Game.SCALE)/2;
-        int bY = (int)(402*Game.SCALE)/2;
+        int menuX = (int) (516 * Game.SCALE) / 2;
+        int replayX = (int) (596 * Game.SCALE) / 2;
+        int unPauseX = (int) (676 * Game.SCALE) / 2;
+        int bY = (int) (402 * Game.SCALE) / 2;
 
         menuB = new UrmButton(menuX, bY, URM_SIZE, URM_SIZE, 2);
         replayB = new UrmButton(replayX, bY, URM_SIZE, URM_SIZE, 1);
@@ -43,13 +39,12 @@ public class PauseOverlay {
     }
 
 
-
     private void loadBackground() {
         backgroundImg = LoadSave.GetSpriteAtlas(LoadSave.PAUSE_BACKGROUND);
-        backgroundW = (int) (backgroundImg.getWidth() * Game.SCALE)/2;
-        backgroundH = (int) (backgroundImg.getHeight() * Game.SCALE)/2;
+        backgroundW = (int) (backgroundImg.getWidth() * Game.SCALE) / 2;
+        backgroundH = (int) (backgroundImg.getHeight() * Game.SCALE) / 2;
         backgroundX = Game.GAME_WIDTH / 2 - backgroundW / 2;
-        backgroundY = (int)(50*Game.SCALE);
+        backgroundY = (int) (50 * Game.SCALE);
     }
 
     public void update() {
@@ -66,8 +61,7 @@ public class PauseOverlay {
 
     public void draw(Graphics g) {
         //background
-        g.drawImage(backgroundImg,backgroundX,backgroundY,backgroundW,backgroundH,null);
-
+        g.drawImage(backgroundImg, backgroundX, backgroundY, backgroundW, backgroundH, null);
 
 
         //urm buttons
@@ -101,15 +95,15 @@ public class PauseOverlay {
                 Gamestate.state = Gamestate.MENU;
                 playing.unpauseGame();
             }
-        }else if (isIn(e, replayB)) {
-            if (replayB.isMousePressed()){
+        } else if (isIn(e, replayB)) {
+            if (replayB.isMousePressed()) {
                 playing.resetAll();
                 playing.unpauseGame();
             }
-        }else if (isIn(e, unpauseB)) {
+        } else if (isIn(e, unpauseB)) {
             if (unpauseB.isMousePressed())
                 playing.unpauseGame();
-        }else
+        } else
             audioOptions.mouseReleased(e);
         menuB.resetBools();
         replayB.resetBools();
@@ -132,8 +126,8 @@ public class PauseOverlay {
             audioOptions.mouseMoved(e);
     }
 
-    private boolean isIn(MouseEvent e, PauseButton b){
-        return b.getBounds().contains(e.getX(),e.getY());
+    private boolean isIn(MouseEvent e, PauseButton b) {
+        return b.getBounds().contains(e.getX(), e.getY());
     }
 
 

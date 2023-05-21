@@ -1,18 +1,19 @@
 package gamestates;
 
-import java.awt.Graphics;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-
 import Main.Game;
 import ui.MenuButton;
 import utilz.LoadSave;
 
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+
 public class Menu extends State implements Statemethods {
 
-    private MenuButton[] buttons = new MenuButton[3];
-    private BufferedImage backgroundImg, backgroundImgMenu;
+    private final MenuButton[] buttons = new MenuButton[3];
+    private BufferedImage backgroundImg;
+    private final BufferedImage backgroundImgMenu;
     private int menuX, menuY, menuWidth, menuHeight;
 
     public Menu(Game game) {
@@ -24,17 +25,17 @@ public class Menu extends State implements Statemethods {
 
     private void loadBackground() {
         backgroundImg = LoadSave.GetSpriteAtlas(LoadSave.MENU_BACKGROUND);
-        menuWidth = (int) (backgroundImg.getWidth() * Game.SCALE)/2;
-        menuHeight = (int) (backgroundImg.getHeight() * Game.SCALE)/2;
+        menuWidth = (int) (backgroundImg.getWidth() * Game.SCALE) / 2;
+        menuHeight = (int) (backgroundImg.getHeight() * Game.SCALE) / 2;
         menuX = Game.GAME_WIDTH / 2 - menuWidth / 2;
         menuY = (int) (50 * Game.SCALE);
 
     }
 
     private void loadButtons() {
-        buttons[0] = new MenuButton(Game.GAME_WIDTH / 2, (int) (205 * Game.SCALE/2), 0, Gamestate.PLAYING);
-        buttons[1] = new MenuButton(Game.GAME_WIDTH / 2, (int) (275 * Game.SCALE/2), 1, Gamestate.OPTIONS);
-        buttons[2] = new MenuButton(Game.GAME_WIDTH / 2, (int) (345 * Game.SCALE/2), 2, Gamestate.QUIT);
+        buttons[0] = new MenuButton(Game.GAME_WIDTH / 2, (int) (205 * Game.SCALE / 2), 0, Gamestate.PLAYING);
+        buttons[1] = new MenuButton(Game.GAME_WIDTH / 2, (int) (275 * Game.SCALE / 2), 1, Gamestate.OPTIONS);
+        buttons[2] = new MenuButton(Game.GAME_WIDTH / 2, (int) (345 * Game.SCALE / 2), 2, Gamestate.QUIT);
     }
 
     @Override
@@ -46,7 +47,7 @@ public class Menu extends State implements Statemethods {
     @Override
     public void draw(Graphics g) {
 
-        g.drawImage(backgroundImgMenu,0,0,Game.GAME_WIDTH, Game.GAME_HEIGHT,null);
+        g.drawImage(backgroundImgMenu, 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
 
         g.drawImage(backgroundImg, menuX, menuY, menuWidth, menuHeight, null);
 

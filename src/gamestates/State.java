@@ -1,9 +1,9 @@
 package gamestates;
 
-import java.awt.event.MouseEvent;
-
 import Main.Game;
 import ui.MenuButton;
+
+import java.awt.event.MouseEvent;
 
 public class State {
 

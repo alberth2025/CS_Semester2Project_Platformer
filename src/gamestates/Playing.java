@@ -14,7 +14,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import static Main.Game.*;
+
+import static Main.Game.GAME_HEIGHT;
+import static Main.Game.GAME_WIDTH;
 
 public class Playing extends State implements Statemethods {
     private Player player;
@@ -25,11 +27,11 @@ public class Playing extends State implements Statemethods {
     private LevelCompletedOverlay levelCompletedOverlay;
     private boolean paused = false;
     private int xLvlOffset;
-    private int leftBorder = (int) (0.2 * GAME_WIDTH);
-    private int rightBorder = (int) (0.8 * GAME_WIDTH);
+    private final int leftBorder = (int) (0.2 * GAME_WIDTH);
+    private final int rightBorder = (int) (0.8 * GAME_WIDTH);
     private int maxLvlOffsetX;
 
-    private BufferedImage backgroundImg;
+    private final BufferedImage backgroundImg;
     private boolean gameOver;
 
     private boolean cutsceneCompleted;
@@ -45,12 +47,12 @@ public class Playing extends State implements Statemethods {
         loadStartLevel();
     }
 
-    public void loadNextLevel(){
+    public void loadNextLevel() {
         resetAll();
         levelManager.loadNextLevel();
     }
 
-    private void loadStartLevel(){
+    private void loadStartLevel() {
         enemyManager.loadEnemies(levelManager.getCurrentLevel());
     }
 
@@ -74,13 +76,13 @@ public class Playing extends State implements Statemethods {
 
     @Override
     public void update() {
-        if (paused){
+        if (paused) {
             pauseOverlay.update();
-        }else if (lvlCompleted) {
+        } else if (lvlCompleted) {
             levelCompletedOverlay.update();
         } else if (playerDying) {
             player.update();
-        } else if(!gameOver){
+        } else if (!gameOver) {
             levelManager.update();
             player.update();
             enemyManager.update(levelManager.getCurrentLevel().getLvlData(), player);
@@ -94,27 +96,27 @@ public class Playing extends State implements Statemethods {
 
         if (diff > rightBorder)
             xLvlOffset += diff - rightBorder;
-        else if(diff < leftBorder)
-            xLvlOffset += diff-leftBorder;
+        else if (diff < leftBorder)
+            xLvlOffset += diff - leftBorder;
 
         if (xLvlOffset > maxLvlOffsetX)
             xLvlOffset = maxLvlOffsetX;
-        else if (xLvlOffset<0)
+        else if (xLvlOffset < 0)
             xLvlOffset = 0;
     }
 
 
     @Override
     public void draw(Graphics g) {
-        g.drawImage(backgroundImg,0,0, GAME_WIDTH,GAME_HEIGHT,null);
+        g.drawImage(backgroundImg, 0, 0, GAME_WIDTH, GAME_HEIGHT, null);
 
         levelManager.draw(g, xLvlOffset);
         player.render(g, xLvlOffset);
         enemyManager.draw(g, xLvlOffset);
 
         if (paused) {
-            g.setColor(new Color(0,0,0,150));
-            g.fillRect(0,0, GAME_WIDTH, GAME_HEIGHT);
+            g.setColor(new Color(0, 0, 0, 150));
+            g.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
             pauseOverlay.draw(g);
         } else if (gameOver) {
             gameOverOverlay.draw(g);
@@ -123,7 +125,7 @@ public class Playing extends State implements Statemethods {
         }
     }
 
-    public void resetAll(){
+    public void resetAll() {
         gameOver = false;
         paused = false;
         lvlCompleted = false;
@@ -133,12 +135,12 @@ public class Playing extends State implements Statemethods {
         enemyManager.resetAllEnemies();
     }
 
-    public void setGameOver(boolean gameOver){
+    public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
     }
 
 
-    public void checkEnemyHit(Rectangle2D.Float attackBox){
+    public void checkEnemyHit(Rectangle2D.Float attackBox) {
         enemyManager.checkEnemyHit(attackBox);
     }
 
@@ -166,7 +168,7 @@ public class Playing extends State implements Statemethods {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if (!gameOver){
+        if (!gameOver) {
             if (paused)
                 pauseOverlay.mouseReleased(e);
             else if (lvlCompleted)
@@ -209,7 +211,7 @@ public class Playing extends State implements Statemethods {
                 case KeyEvent.VK_ESCAPE:
                     paused = !paused;
                     break;
-        }
+            }
     }
 
     @Override
@@ -239,11 +241,11 @@ public class Playing extends State implements Statemethods {
         return player;
     }
 
-    public EnemyManager getEnemyManager(){
+    public EnemyManager getEnemyManager() {
         return enemyManager;
     }
 
-    public void setMaxLvlOffset(int lvlOffset){
+    public void setMaxLvlOffset(int lvlOffset) {
         this.maxLvlOffsetX = lvlOffset;
     }
 
@@ -251,7 +253,7 @@ public class Playing extends State implements Statemethods {
         this.lvlCompleted = levelCompleted;
     }
 
-    public void setPlayerDying(boolean playerDying){
+    public void setPlayerDying(boolean playerDying) {
         this.playerDying = playerDying;
     }
 }

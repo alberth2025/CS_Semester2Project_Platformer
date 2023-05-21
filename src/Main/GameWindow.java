@@ -1,11 +1,13 @@
 package Main;
-import javax.swing.JFrame;
+
+import javax.swing.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 
 public class GameWindow {
     private final JFrame jFrame;
-    public GameWindow(GamePanel gamePanel){
+
+    public GameWindow(GamePanel gamePanel) {
 
         jFrame = new JFrame();
 

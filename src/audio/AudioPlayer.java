@@ -13,26 +13,30 @@ public class AudioPlayer {
     private int currentSoundId;
     private float volume = 1f;
     private boolean songMute, effectMute;
-    private Random rand = new Random();
-    public AudioPlayer(){
+    private final Random rand = new Random();
+
+    public AudioPlayer() {
         loadSongs();
         loadEffects();
         playSong(SONG);
     }
+
     private void loadSongs() {
         String[] names = {"victory_or_death"};
         songs = new Clip[names.length];
-        for (int i = 0; i<songs.length; i++)
+        for (int i = 0; i < songs.length; i++)
             songs[i] = getClip(names[i]);
     }
-    private void loadEffects(){
-        String [] effectNames = {"sword", "dying"};
+
+    private void loadEffects() {
+        String[] effectNames = {"sword", "dying"};
         effects = new Clip[effectNames.length];
-        for (int i = 0; i< effects.length; i++)
+        for (int i = 0; i < effects.length; i++)
             effects[i] = getClip(effectNames[i]);
         updateEffectsVolume();
     }
-    private Clip getClip(String name){
+
+    private Clip getClip(String name) {
         URL url = getClass().getResource("/audio/" + name + ".wav");
         AudioInputStream audio;
 
@@ -41,28 +45,29 @@ public class AudioPlayer {
             Clip c = AudioSystem.getClip();
             c.open(audio);
             return c;
-        } catch (UnsupportedAudioFileException | IOException |LineUnavailableException e) {
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public void playAttackSound(){
+    public void playAttackSound() {
         int start = 0;
         playEffect(start);
     }
 
-    public void setVolume(float volume){
+    public void setVolume(float volume) {
         this.volume = volume;
         updateSongVolume();
         updateEffectsVolume();
     }
 
-    public void playEffect(int effect){
+    public void playEffect(int effect) {
         effects[effect].setMicrosecondPosition(0);
         effects[effect].start();
     }
-    public void playSong(int song){
+
+    public void playSong(int song) {
         if (songs[currentSoundId].isActive())
             songs[currentSoundId].stop();
         currentSoundId = song;
@@ -71,16 +76,17 @@ public class AudioPlayer {
         songs[currentSoundId].loop(Clip.LOOP_CONTINUOUSLY);
     }
 
-    public void toggleSongMute(){
+    public void toggleSongMute() {
         this.songMute = !songMute;
-        for (Clip c: songs){
+        for (Clip c : songs) {
             BooleanControl booleanControl = (BooleanControl) c.getControl(BooleanControl.Type.MUTE);
             booleanControl.setValue(songMute);
         }
     }
-    public void toggleEffectMute(){
+
+    public void toggleEffectMute() {
         this.effectMute = !effectMute;
-        for (Clip c: effects){
+        for (Clip c : effects) {
             BooleanControl booleanControl = (BooleanControl) c.getControl(BooleanControl.Type.MUTE);
             booleanControl.setValue(effectMute);
         }
@@ -88,17 +94,18 @@ public class AudioPlayer {
             playEffect(SWORD);
     }
 
-    private void updateSongVolume(){
+    private void updateSongVolume() {
         FloatControl gainControl = (FloatControl) songs[currentSoundId].getControl(FloatControl.Type.MASTER_GAIN);
         float range = gainControl.getMaximum() - gainControl.getMinimum();
-        float gain = (range*volume) + gainControl.getMinimum();
+        float gain = (range * volume) + gainControl.getMinimum();
         gainControl.setValue(gain);
     }
-    private void updateEffectsVolume(){
-        for (Clip c: effects){
+
+    private void updateEffectsVolume() {
+        for (Clip c : effects) {
             FloatControl gainControl = (FloatControl) songs[currentSoundId].getControl(FloatControl.Type.MASTER_GAIN);
             float range = gainControl.getMaximum() - gainControl.getMinimum();
-            float gain = (range*volume) + gainControl.getMinimum();
+            float gain = (range * volume) + gainControl.getMinimum();
             gainControl.setValue(gain);
         }
     }

@@ -9,9 +9,11 @@ import java.awt.event.KeyListener;
 public class KeyboardInputs implements KeyListener {
 
     private final GamePanel gamePanel;
-    public KeyboardInputs(GamePanel gamePanel){
+
+    public KeyboardInputs(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
     }
+
     @Override
     public void keyTyped(KeyEvent e) {
 
@@ -19,7 +21,7 @@ public class KeyboardInputs implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        switch (Gamestate.state){
+        switch (Gamestate.state) {
             case MENU:
                 gamePanel.getGame().getMenu().keyReleased(e);
                 break;
@@ -30,9 +32,10 @@ public class KeyboardInputs implements KeyListener {
                 break;
         }
     }
+
     @Override
     public void keyPressed(KeyEvent e) {
-        switch (Gamestate.state){
+        switch (Gamestate.state) {
             case MENU:
                 gamePanel.getGame().getMenu().keyPressed(e);
                 break;

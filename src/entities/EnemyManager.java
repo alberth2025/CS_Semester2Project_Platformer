@@ -1,9 +1,7 @@
 package entities;
 
-import audio.AudioPlayer;
 import gamestates.Playing;
 import levels.Level;
-import ui.AudioOptions;
 import utilz.LoadSave;
 
 import java.awt.*;
@@ -11,12 +9,13 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import static Main.Game.TILES_SIZE;
 import static utilz.Constants.EnemyConstants.*;
+
 public class EnemyManager {
-    private Playing playing;
+    private final Playing playing;
     private BufferedImage[][] boyArr;
     private ArrayList<Boy> boys = new ArrayList<>();
+
     public EnemyManager(Playing playing) {
         this.playing = playing;
         loadEnemyImgs();
@@ -27,9 +26,9 @@ public class EnemyManager {
         System.out.println("Number of boys: " + boys.size());
     }
 
-    public void update(int[][] lvlData, Player player){
+    public void update(int[][] lvlData, Player player) {
         boolean isAnyActive = false;
-        for (Boy b: boys)
+        for (Boy b : boys)
             if (b.isActive()) {
                 b.update(lvlData, player);
                 isAnyActive = true;
@@ -38,12 +37,12 @@ public class EnemyManager {
             playing.setLevelCompleted(true);
     }
 
-    public void draw(Graphics g, int xLvlOffset){
+    public void draw(Graphics g, int xLvlOffset) {
         drawBoys(g, xLvlOffset);
     }
 
     private void drawBoys(Graphics g, int xLvlOffset) {
-        for (Boy b: boys) {
+        for (Boy b : boys) {
             if (b.isActive()) {
                 g.drawImage(boyArr[b.getEnemyState()][b.getAniIndex()], (int) b.getHitBox().x - xLvlOffset - BOY_DRAWOFFSET_X + b.flipX(), (int) b.getHitBox().y - BOY_DRAWOFFSET_Y, BOY_WIDTH * b.flipW(), BOY_HEIGHT, null);
                 //b.drawHitbox(g, xLvlOffset);
@@ -52,14 +51,15 @@ public class EnemyManager {
         }
     }
 
-    public void checkEnemyHit(Rectangle2D.Float attackBox){
-        for (Boy b: boys)
-            if (attackBox.intersects(b.getHitBox())){
+    public void checkEnemyHit(Rectangle2D.Float attackBox) {
+        for (Boy b : boys)
+            if (attackBox.intersects(b.getHitBox())) {
                 b.hurt(10);
                 playing.getGame().getAudioPlayer().playAttackSound();
                 return;
             }
     }
+
     private void loadEnemyImgs() {
         boyArr = new BufferedImage[5][4];
         BufferedImage temp = LoadSave.GetSpriteAtlas(LoadSave.BOY_SPRITE);
@@ -68,8 +68,8 @@ public class EnemyManager {
                 boyArr[j][i] = temp.getSubimage(20 * i + 80, 30 * j + 20, 16, 16);
     }
 
-    public void resetAllEnemies(){
-        for (Boy b: boys)
+    public void resetAllEnemies() {
+        for (Boy b : boys)
             b.resetEnemy();
     }
 

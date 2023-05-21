@@ -1,16 +1,17 @@
 package ui;
 
-import utilz.Constants;
 import utilz.LoadSave;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import static utilz.Constants.UI.URMButtons.*;
+import static utilz.Constants.UI.URMButtons.URM_DEFAULT_SIZE;
+import static utilz.Constants.UI.URMButtons.URM_SIZE;
 
 public class UrmButton extends PauseButton {
     private BufferedImage[] imgs;
-    private int rowIndex, index;
+    private final int rowIndex;
+    private int index;
     private boolean mouseOver, mousePressed;
 
     public UrmButton(int x, int y, int width, int height, int rowIndex) {

@@ -5,15 +5,13 @@ import audio.AudioPlayer;
 import gamestates.Playing;
 import utilz.LoadSave;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
 
 import static Main.Game.GAME_HEIGHT;
-import static utilz.Constants.*;
+import static utilz.Constants.ANI_SPEED;
+import static utilz.Constants.GRAVITY;
 import static utilz.Constants.PlayerConstants.*;
 import static utilz.HelpMethods.*;
 
@@ -23,28 +21,28 @@ public class Player extends Entity {
     private boolean left, right, jump;
     private boolean moving = false, attacking = false;
     private int[][] lvlData;
-    private float xDrawOffset = 1 * Game.SCALE;
-    private float yDrawOffset = 1 * Game.SCALE;
+    private final float xDrawOffset = 1 * Game.SCALE;
+    private final float yDrawOffset = 1 * Game.SCALE;
 
     //jumping and gravity
-    private float jumpSpeed = -2.75f * Game.SCALE;
-    private float fallSpeedAfterCollision = 0.5f * Game.SCALE;
+    private final float jumpSpeed = -2.75f * Game.SCALE;
+    private final float fallSpeedAfterCollision = 0.5f * Game.SCALE;
 
     //StatusBarUI
     private BufferedImage statusBarImg;
 
-    private int statusBarWidth = (int) (222 * (Game.SCALE + 1));
-    private int statusBarHeight = (int) (15 * (Game.SCALE + 1));
-    private int statusBarX = (int) (1 * (Game.SCALE + 1));
-    private int statusBarY = (int) (1 * (Game.SCALE + 1));
+    private final int statusBarWidth = (int) (222 * (Game.SCALE + 1));
+    private final int statusBarHeight = (int) (15 * (Game.SCALE + 1));
+    private final int statusBarX = (int) (1 * (Game.SCALE + 1));
+    private final int statusBarY = (int) (1 * (Game.SCALE + 1));
 
-    private int healthBarWidth = (int) (208 * (Game.SCALE + 1));
-    private int healthBarHeight = (int) (11 * (Game.SCALE + 1));
-    private int healthBarXStart = (int) (13 * (Game.SCALE + 1));
-    private int healthBarYStart = (int) (3 * (Game.SCALE + 1));
+    private final int healthBarWidth = (int) (208 * (Game.SCALE + 1));
+    private final int healthBarHeight = (int) (11 * (Game.SCALE + 1));
+    private final int healthBarXStart = (int) (13 * (Game.SCALE + 1));
+    private final int healthBarYStart = (int) (3 * (Game.SCALE + 1));
 
     private int healthWidth = healthBarWidth;
-    private Playing playing;
+    private final Playing playing;
 
     //AttackBox
     private int flipX = 0;
@@ -57,7 +55,7 @@ public class Player extends Entity {
         this.state = IDLE;
         this.maxHealth = 100;
         this.currentHealth = maxHealth;
-        this.moveSpeed = Game.SCALE*1.0f;
+        this.moveSpeed = Game.SCALE;
         loadAnimations();
         initHitbox(12, 15);
         initAttackBox();
@@ -71,15 +69,15 @@ public class Player extends Entity {
         updateHealthBar();
 
         if (currentHealth <= 0) {
-            if (state!= DEATH) {
+            if (state != DEATH) {
                 state = DEATH;
                 aniTick = 0;
                 aniIndex = 0;
                 playing.setPlayerDying(true);
                 playing.getGame().getAudioPlayer().playEffect(AudioPlayer.DIE);
-            } else if (aniIndex == GetSpriteAmounts(DEATH) - 1 && aniTick >= ANI_SPEED -1) {
+            } else if (aniIndex == GetSpriteAmounts(DEATH) - 1 && aniTick >= ANI_SPEED - 1) {
                 playing.setGameOver(true);
-            }else
+            } else
                 updateAnimationTick();
             playing.setGameOver(true);
             return;
@@ -195,7 +193,7 @@ public class Player extends Entity {
                 hitBox.y += airSpeed;
                 airSpeed += GRAVITY;
                 updateXPos(xSpeed);
-            } else if (hitBox.y + hitBox.height + 1*(Game.SCALE+1) >= GAME_HEIGHT) {
+            } else if (hitBox.y + hitBox.height + 1 * (Game.SCALE + 1) >= GAME_HEIGHT) {
                 changeHealth(-100);
             } else {
                 hitBox.y = GetEntityYPosUnderRoofOrAboveFloor(hitBox, airSpeed);
@@ -285,7 +283,6 @@ public class Player extends Entity {
     public void setRight(boolean right) {
         this.right = right;
     }
-
 
 
     public void setJump(boolean jump) {

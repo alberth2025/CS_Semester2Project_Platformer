@@ -1,14 +1,13 @@
 package Main;
 
 import audio.AudioPlayer;
-import gamestates.*;
+import gamestates.GameOptions;
+import gamestates.Gamestate;
 import gamestates.Menu;
+import gamestates.Playing;
 import ui.AudioOptions;
-import utilz.LoadSave;
 
 import java.awt.*;
-
-import static java.awt.SystemColor.menu;
 
 public class Game implements Runnable {
     private final GameWindow gameWindow;
@@ -129,24 +128,24 @@ public class Game implements Runnable {
     }
 
     public void windowFocusLost() {
-        if (Gamestate.state==Gamestate.PLAYING){
+        if (Gamestate.state == Gamestate.PLAYING) {
             playing.getPlayer().resetDirBooleans();
         }
     }
 
-    public Menu getMenu(){
+    public Menu getMenu() {
         return menu;
     }
 
-    public Playing getPlaying(){
+    public Playing getPlaying() {
         return playing;
     }
 
-    public AudioOptions getAudioOptions(){
+    public AudioOptions getAudioOptions() {
         return audioOptions;
     }
 
-    public GameOptions getGameOptions(){
+    public GameOptions getGameOptions() {
         return gameOptions;
     }
 
